@@ -1,0 +1,21 @@
+# Render Blueprint: New -> Blueprint -> select this repo.
+services:
+  - type: web
+    name: jobjugaad
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false            # Render asks you for it at deploy time
+      - key: JOBJUGAAD_APP_PASSWORD
+        generateValue: true    # random password; find it under the service's Environment tab
+      - key: JOBJUGAAD_DATABASE_URL
+        fromDatabase:
+          name: jobjugaad-db
+          property: connectionString
+
+databases:
+  - name: jobjugaad-db
+    plan: free
+    databaseName: jobjugaad
